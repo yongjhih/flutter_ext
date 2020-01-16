@@ -1,3 +1,5 @@
+library flutterx;
+
 extension BuildContextX<T extends BuildContext> on T {
   ThemeData theme({bool shadowThemeOnly}) => Theme.of(this, shadowThemeOnly: shadowThemeOnly);
 
