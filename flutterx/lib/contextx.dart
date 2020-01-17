@@ -1,4 +1,4 @@
-library flutterx;
+library contextx;
 
 import 'package:flutter/material.dart';
 
