@@ -40,10 +40,10 @@ final username = context.provider<UsernameNotifier>(listen: false).value;
 ```yml
   flutterx:
     git:
-      url: git://github.com/yongjhih/flutterx.git
+      url: https://github.com/yongjhih/flutterx.git
       path: flutterx
   providerx:
     git:
-      url: git://github.com/yongjhih/flutterx.git
+      url: https://github.com/yongjhih/flutterx.git
       path: providerx
 ```
