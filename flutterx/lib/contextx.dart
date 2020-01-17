@@ -1,5 +1,7 @@
 library flutterx;
 
+import 'package:flutter/material.dart';
+
 extension BuildContextX<T extends BuildContext> on T {
   ThemeData theme({bool shadowThemeOnly}) => Theme.of(this, shadowThemeOnly: shadowThemeOnly);
 
