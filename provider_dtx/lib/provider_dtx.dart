@@ -1,4 +1,4 @@
-library providerx;
+library provider_dtx;
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

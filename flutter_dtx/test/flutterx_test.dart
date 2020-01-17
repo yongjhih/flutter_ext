@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutterx/flutterx.dart';
+import 'package:flutter_dtx/flutter_dtx.dart';
 
 void main() {
   test('should as<T>()', () async {

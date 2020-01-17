@@ -1,4 +1,4 @@
-# providerx
+# provider_dtx
 
 A new Flutter package project.
 

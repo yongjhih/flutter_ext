@@ -1,4 +1,4 @@
-# flutterx
+# flutter_dtx
 
 A new Flutter package project.
 

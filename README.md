@@ -38,12 +38,12 @@ final username = context.provider<UsernameNotifier>(listen: false).value;
 ## Installation
 
 ```yml
-  flutterx:
+  flutter_dtx:
     git:
-      url: https://github.com/yongjhih/flutterx.git
-      path: flutterx
-  providerx:
+      url: https://github.com/yongjhih/flutter_dtx.git
+      path: flutter_dtx
+  provider_dtx:
     git:
-      url: https://github.com/yongjhih/flutterx.git
-      path: providerx
+      url: https://github.com/yongjhih/flutter_dtx.git
+      path: provider_dtx
 ```

@@ -1,4 +1,4 @@
-library flutterx;
+library flutter_dtx;
 
 // TODO: Move to dartx
 extension AsX<T extends Object> on T {
