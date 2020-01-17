@@ -14,5 +14,6 @@ extension BuildContextX<T extends BuildContext> on T {
   );
 
   FocusScopeNode focusScope() => FocusScope.of(this);
-}
 
+  ModalRoute<T> modalRoute<T>() => ModalRoute.of<T>(this);
+}
