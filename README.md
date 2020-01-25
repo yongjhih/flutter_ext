@@ -46,6 +46,10 @@ final username = context.provider<UsernameNotifier>(listen: false).value;
     git:
       url: https://github.com/yongjhih/flutter_dtx.git
       path: provider_dtx
+  rxdartx:
+    git:
+      url: https://github.com/yongjhih/flutter_dtx.git
+      path: rxdartx
 ```
 
 ## See Also
