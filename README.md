@@ -35,6 +35,29 @@ After:
 final username = context.provider<UsernameNotifier>(listen: false).value;
 ```
 
+
+Before:
+
+```dart
+expect(
+  await Stream.fromIterable(["123", "abc"])
+    .distinct((prev, next) => prev.length == next.length)
+    .last,
+  "123"
+);
+```
+
+After:
+
+```dart
+expect(
+  await Stream.fromIterable(["123", "abc"])
+    .distinctBy((it) => it.length)
+    .last,
+   "123"
+);
+```
+
 ## Installation
 
 ```yml
