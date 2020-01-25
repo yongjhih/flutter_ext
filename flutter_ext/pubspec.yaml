@@ -1,8 +1,8 @@
-name: provider_dtx
-description: A new Flutter package project.
+name: flutter_ext
+description: The extensions for Flutter.
 version: 0.0.1
 author: yongjhih@gmail.com
-homepage: https://github.com/yongjhih/flutter_dtx
+homepage: https://github.com/yongjhih/flutter_ext
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^3.0.0+1
 
 dev_dependencies:
   flutter_test:

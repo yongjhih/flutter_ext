@@ -61,17 +61,17 @@ expect(
 ## Installation
 
 ```yml
-  flutter_dtx:
+  flutter_ext:
     git:
-      url: https://github.com/yongjhih/flutter_dtx.git
+      url: https://github.com/yongjhih/flutter_ext.git
       path: flutter_dtx
-  provider_dtx:
+  providerx:
     git:
-      url: https://github.com/yongjhih/flutter_dtx.git
+      url: https://github.com/yongjhih/flutter_ext.git
       path: provider_dtx
   streamx:
     git:
-      url: https://github.com/yongjhih/flutter_dtx.git
+      url: https://github.com/yongjhih/flutter_ext.git
       path: streamx
 ```
 

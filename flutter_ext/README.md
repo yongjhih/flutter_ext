@@ -1,4 +1,4 @@
-# flutter_dtx
+# flutter_ext
 
 A new Flutter package project.
 
