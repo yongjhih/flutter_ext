@@ -63,7 +63,7 @@ Before:
 ```dart
 expect(1, isNotNull);
 expect([], isEmpty);
-expect([], []);
+expect([1, 2, 3], [1, 2, 3]);
 expect(1, isIn([1, 2, 3]));
 expect(0, predicate((x) => ((x % 2) == 0), "is even"))
 

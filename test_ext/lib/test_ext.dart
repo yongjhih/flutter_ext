@@ -13,6 +13,18 @@ extension MatcherX<T extends test.Matcher> on T {
   bool match<S>(S actual, {
     Map matchState,
   }) => matches(actual, matchState);
+
+  test.Matcher not() => _NotMatcher(this);
+}
+
+class _NotMatcher extends test.Matcher {
+  const _NotMatcher(this._matcher);
+  final test.Matcher _matcher;
+  @override
+  bool matches(item, Map matchState) => !_matcher.matches(item, matchState);
+
+  @override
+  test.Description describe(test.Description description) => _matcher.describe(description).add("not");
 }
 
 extension MatcherStringX<T extends String> on T {

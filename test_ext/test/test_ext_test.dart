@@ -15,6 +15,9 @@ void main() {
 
     predicate((x) => ((x % 2) == 0), "is even").of(0);
 
+    same(list0).not().of([]);
+    equals([]).not().of([1]);
+
     //expect(v, predicate((x) => ((x % 2) == 0), "is even"))
     //expect(isEmpty.match([]), isTrue);
     //final list0 = [];
