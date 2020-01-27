@@ -9,5 +9,5 @@ extension StreamX<T> on Stream<T> {
 }
 
 extension IterableStreamX<T> on Iterable<T> {
-  Stream<T> toStream() => Stream.fromIterable(this);
+  Stream<T> asStream() => Stream.fromIterable(this);
 }
