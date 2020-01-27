@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 
-import 'package:rxdartx/rxdartx.dart';
+import 'package:dart_ext/dart_ext.dart';
 import 'package:rxdart/rxdart.dart';
 
 void main() {

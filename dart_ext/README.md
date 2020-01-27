@@ -1,4 +1,4 @@
-# rxdartx
+# dart_ext
 
 A new Flutter package project.
 
