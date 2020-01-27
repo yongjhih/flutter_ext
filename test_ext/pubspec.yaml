@@ -9,6 +9,3 @@ environment:
 
 dependencies:
   test: ^1.9.2
-
-dev_dependencies:
-  test: ^1.9.2

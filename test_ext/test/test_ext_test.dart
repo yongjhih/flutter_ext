@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 import 'package:test_ext/test_ext.dart';
 
 void main() {
-  test("MatcherX" , () {
+  test("MatcherX", () {
     isNotNull.of(1);
     isNull.of(null);
     isEmpty.of([]);
@@ -23,4 +23,21 @@ void main() {
     //final list0 = [];
     //expect(same(list0).match(list0), isTrue);
   });
+  /*
+  test("T.should*", () {
+    "".shouldBeEmpty();
+    "123".shouldBeNotEmpty();
+    1.shouldBeNotEmpty();
+  });
+
+  test("assertThat", () {
+    // called Object.shouldBeEmpty() not String.shouldBeEmpty
+    assertThat("").shouldBeEmpty();
+    assertThat("123").shouldBeNotEmpty();
+    // called Object.shouldBeEmpty() still not String.shouldBeEmpty
+    assertThat<String>("").shouldBeEmpty();
+    assertThat<String>("123").shouldBeNotEmpty();
+    //assertThat(1).shouldBeEmpty();
+  });
+  */
 }
