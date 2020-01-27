@@ -58,6 +58,33 @@ expect(
 );
 ```
 
+Before:
+
+```dart
+expect(1, isNotNull);
+expect([], isEmpty);
+expect([], []);
+expect(1, isIn([1, 2, 3]));
+expect(0, predicate((x) => ((x % 2) == 0), "is even"))
+
+final list0 = [];
+expect(list0, same(list0));
+```
+
+After:
+
+```dart
+isNotNull.of(1);
+isNull.of(null);
+isEmpty.of([]);
+equals([]).of([]);
+[1, 2, 3].isHaving(1); // isIn([1, 2, 3]).of(1)
+predicate((x) => ((x % 2) == 0), "is even").of(0);
+
+final list0 = [];
+same(list0).of(list0);
+```
+
 ## Installation
 
 ```yml
@@ -73,6 +100,10 @@ expect(
     git:
       url: https://github.com/yongjhih/flutter_ext.git
       path: streamx
+  test_ext:
+    git:
+      url: https://github.com/yongjhih/flutter_ext.git
+      path: test_ext
 ```
 
 ## See Also
