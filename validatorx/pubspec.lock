@@ -333,19 +333,10 @@ packages:
   validators:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "67220df6f41521cd33cad4b6d32dcb3507dba10d"
-      url: "https://github.com/dart-league/validators.git"
-    source: git
-    version: "2.0.0+1"
-  vin_decoder:
-    dependency: transitive
-    description:
-      name: vin_decoder
+      name: validators
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1+1"
+    version: "2.0.0+1"
   vm_service:
     dependency: transitive
     description:
