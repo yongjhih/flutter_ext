@@ -1,0 +1,16 @@
+name: validatorx
+description: The extensions for validatorx
+version: 0.0.1
+author: yongjhih@gmail.com
+homepage: https://github.com/yongjhih/flutter_ext
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  validators:
+    git:
+      url: https://github.com/dart-league/validators.git
+
+dev_dependencies:
+  test: ^1.9.2
