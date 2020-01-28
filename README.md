@@ -104,6 +104,10 @@ same(list0).of(list0);
     git:
       url: https://github.com/yongjhih/flutter_ext.git
       path: test_ext
+  validatorx:
+    git:
+      url: https://github.com/yongjhih/flutter_ext.git
+      path: validatorx
 ```
 
 ## See Also
