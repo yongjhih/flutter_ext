@@ -88,9 +88,11 @@ packages:
   dartx:
     dependency: "direct main"
     description:
-      name: dartx
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "26e9ce36261017c653e304c69cd6f8735568e50a"
+      resolved-ref: "26e9ce36261017c653e304c69cd6f8735568e50a"
+      url: "https://github.com/yongjhih/dartx.git"
+    source: git
     version: "0.3.0"
   glob:
     dependency: transitive
@@ -347,11 +349,9 @@ packages:
   test_ext:
     dependency: "direct dev"
     description:
-      path: test_ext
-      ref: a4576fd8e1d8503fd27acfc1ff5eec2a936bfec4
-      resolved-ref: a4576fd8e1d8503fd27acfc1ff5eec2a936bfec4
-      url: "https://github.com/yongjhih/flutter_ext.git"
-    source: git
+      name: test_ext
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.0.1"
   time:
     dependency: "direct main"
