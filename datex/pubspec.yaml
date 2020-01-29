@@ -14,7 +14,7 @@ dependencies:
     git:
       url: https://github.com/yongjhih/dartx.git
       ref: 26e9ce36261017c653e304c69cd6f8735568e50a
-  intl: ^0.16.1
+  intl: ^0.16.0
 
 dev_dependencies:
   test: ^1.9.2
