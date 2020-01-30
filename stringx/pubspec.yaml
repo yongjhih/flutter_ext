@@ -1,0 +1,19 @@
+name: stringx
+description: The extensions for DateTime/Duration
+version: 0.0.1
+author: yongjhih@gmail.com
+homepage: https://github.com/yongjhih/flutter_ext
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  #dartx: ^0.3.0
+  dartx:
+    git:
+      url: https://github.com/yongjhih/dartx.git
+      ref: 26e9ce36261017c653e304c69cd6f8735568e50a
+
+dev_dependencies:
+  test: ^1.9.2
+  test_ext: ^0.0.1
