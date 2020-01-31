@@ -129,4 +129,26 @@ void main() {
     equals(1.days.agoOf(DateTime(1984, 11, 19)).rangeTo(DateTime(1984, 11, 19)).toList())
         .of(DateTime(1984, 11, 19).downTo(1.days.agoOf(DateTime(1984, 11, 19))).toList().reversed);
   });
+  test('Duration.string()', () {
+    expect(59.seconds.string(), "59 sec.");
+    expect(60.seconds.string(), "1 min.");
+    expect(
+      Duration(days: 1, hours: 23, minutes: 3, seconds: 3).string(),
+      "1 d 23 hrs. 3 min. 3 sec.",
+    );
+    expect(
+      Duration(days: 1, minutes: 3, seconds: 3).string(),
+      "1 d 3 min. 3 sec.",
+    );
+    expect(
+      Duration(days: 1, hours: 24, minutes: 3, seconds: 3).string(),
+      "2 d 3 min. 3 sec.",
+    );
+    expect(
+      Duration(days: 1, seconds: 3).string(),
+      "1 d 3 sec.",
+    );
+    expect(1.microseconds.string(), "<0 sec.");
+    expect(1.milliseconds.string(), "<0 sec.");
+  });
 }

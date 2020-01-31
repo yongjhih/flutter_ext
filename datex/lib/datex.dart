@@ -297,7 +297,47 @@ extension DateTimeStringX<T extends String> on T {
 extension DurationX<T extends Duration> on T {
   String ms() => Durations.ms(this);
   String hms() => Durations.hms(this);
-  String string() => Durations.string(this);
+
+  static const daysPerYear = 365;
+
+  String string({
+    String separator: " ",
+    String seconds: " sec.",
+    String minutes: " min.",
+    String hours: " hrs.",
+    String days: " d",
+    String years: " yrs.",
+  }) {
+    final int nYears = inDays ~/ daysPerYear;
+    final int nDays = inDays.remainder(daysPerYear);
+    final int nHours = inHours.remainder(Duration.hoursPerDay);
+    final int nMinutes = inMinutes.remainder(Duration.minutesPerHour);
+    final int nSeconds = inSeconds.remainder(Duration.secondsPerMinute);
+    
+    final List<String> res = [];
+    
+    if (nSeconds > 0) {
+      res.add("${nSeconds}${seconds}");
+    }
+    if (nMinutes > 0) {
+      res.add("${nMinutes}${minutes}");
+    }
+    if (nHours > 0) {
+      res.add("${nHours}${hours}");
+    }
+    if (nDays > 0) {
+      res.add("${nDays}${days}");
+    }
+    if (nYears > 0) {
+      res.add("${nYears}${years}");
+    }
+
+    if (res.isEmpty) {
+      return "<0${seconds}";
+    }
+
+    return res.reversed.joinToString(separator: separator).trim();
+  }
 
   DateTime agoOf(DateTime since) => (since ?? DateTime.now()) - this;
 }
@@ -311,31 +351,6 @@ class Durations {
   static String hms(Duration duration) {
     final text = "${duration.inHours.abs()}:${duration.inMinutes.remainder(60).abs()}:${duration.inSeconds.remainder(60).abs()}";
     return duration.isNegative ? "-${text}" : text;
-  }
-
-  static String string(Duration duration) {
-    final int years = duration.inDays ~/ 365;
-    final int days = duration.inDays.remainder(365);
-    final int hours = duration.inHours.remainder(60);
-    final int minutes = duration.inMinutes.remainder(60);
-    final int seconds = duration.inSeconds.remainder(60);
-    String res = "< 0 sec.";
-    if (seconds > 0) {
-      res = "${seconds} sec.";
-    }
-    if (minutes > 0) {
-      res = ["${minutes} min.", res].join(" ");
-    }
-    if (hours > 0) {
-      res = ["${hours} hrs.", res].join(" ");
-    }
-    if (days > 0) {
-      res = ["${days} d", res].join(" ");
-    }
-    if (years > 0) {
-      res = ["${years} yrs.", res].join(" ");
-    }
-    return res;
   }
 }
 
