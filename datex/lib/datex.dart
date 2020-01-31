@@ -339,15 +339,6 @@ class Durations {
   }
 }
 
-
-/*
-extension ArithmeticDateTimeX<T extends DateTime> on T {
-  //Duration operator -(T it) => difference(it);
-  DateTime operator -(Duration it) => subtract(it);
-  DateTime operator +(Duration it) => add(it);
-}
-*/
-
 extension DateTimeAgo<T extends DateTime> on T {
   //String ago({
   //  String locale,
