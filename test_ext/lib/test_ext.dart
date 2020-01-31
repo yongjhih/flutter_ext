@@ -10,6 +10,11 @@ extension MatcherX<T extends test.Matcher> on T {
     test.expect(actual, this, reason: reason, skip: skip);
   }
 
+  void to<S>(S actual, {
+    String reason,
+    dynamic skip, // true or a String
+  }) => of(actual, reason: reason, skip: skip);
+
   bool match<S>(S actual, {
     Map matchState,
   }) => matches(actual, matchState);
