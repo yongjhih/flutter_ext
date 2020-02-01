@@ -303,10 +303,15 @@ extension DurationX<T extends Duration> on T {
   String string({
     String separator: " ",
     String seconds: " sec.",
+    String second: " sec.",
     String minutes: " min.",
+    String minute: " min.",
     String hours: " h",
+    String hour: " h",
     String days: " d",
+    String day: " d",
     String years: " y",
+    String year: " y",
   }) {
     final int nYears = inDays ~/ daysPerYear;
     final int nDays = inDays.remainder(daysPerYear);
@@ -317,23 +322,43 @@ extension DurationX<T extends Duration> on T {
     final List<String> res = [];
     
     if (nSeconds >= 0) {
-      res.add("${nSeconds}${seconds}");
+      if (nYears == 1) {
+        res.add("${nSeconds}${second}");
+      } else {
+        res.add("${nSeconds}${seconds}");
+      }
     }
     if (nMinutes > 0) {
-      res.add("${nMinutes}${minutes}");
+      if (nYears == 1) {
+        res.add("${nMinutes}${minute}");
+      } else {
+        res.add("${nMinutes}${minutes}");
+      }
     }
     if (nHours > 0) {
-      res.add("${nHours}${hours}");
+      if (nYears == 1) {
+        res.add("${nHours}${hour}");
+      } else {
+        res.add("${nHours}${hours}");
+      }
     }
     if (nDays > 0) {
-      res.add("${nDays}${days}");
+      if (nYears == 1) {
+        res.add("${nDays}${day}");
+      } else {
+        res.add("${nDays}${days}");
+      }
     }
     if (nYears > 0) {
-      res.add("${nYears}${years}");
+      if (nYears == 1) {
+        res.add("${nYears}${year}");
+      } else {
+        res.add("${nYears}${years}");
+      }
     }
 
     if (res.isEmpty) {
-      return "<0${seconds}";
+      return "<0${second}";
     }
 
     return res.reversed.joinToString(separator: separator).trim();
