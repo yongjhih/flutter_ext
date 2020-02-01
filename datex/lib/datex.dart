@@ -304,9 +304,9 @@ extension DurationX<T extends Duration> on T {
     String separator: " ",
     String seconds: " sec.",
     String minutes: " min.",
-    String hours: " hrs.",
+    String hours: " h",
     String days: " d",
-    String years: " yrs.",
+    String years: " y",
   }) {
     final int nYears = inDays ~/ daysPerYear;
     final int nDays = inDays.remainder(daysPerYear);
@@ -316,19 +316,19 @@ extension DurationX<T extends Duration> on T {
     
     final List<String> res = [];
     
-    if (nSeconds > 0) {
+    if (nSeconds >= 0) {
       res.add("${nSeconds}${seconds}");
     }
-    if (nMinutes > 0) {
+    if (nMinutes >= 0) {
       res.add("${nMinutes}${minutes}");
     }
-    if (nHours > 0) {
+    if (nHours >= 0) {
       res.add("${nHours}${hours}");
     }
-    if (nDays > 0) {
+    if (nDays >= 0) {
       res.add("${nDays}${days}");
     }
-    if (nYears > 0) {
+    if (nYears >= 0) {
       res.add("${nYears}${years}");
     }
 

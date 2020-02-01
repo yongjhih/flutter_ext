@@ -150,5 +150,6 @@ void main() {
     );
     expect(1.microseconds.string(), "<0 sec.");
     expect(1.milliseconds.string(), "<0 sec.");
+    expect(Duration.zero.string(), "0 sec.");
   });
 }
