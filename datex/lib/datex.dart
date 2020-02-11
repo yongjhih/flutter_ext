@@ -90,17 +90,15 @@ class DateTimes {
   static DateTime get zero => _zero;
 }
 
-extension SimpleDateTimeX<T extends DateTime> on T {
-  // 1 AM -1d
-  String haFrom({DateTime since}) {
-    since ??= DateTime.now();
-    final days = difference(since).inDays;
-    final haFormat = DateFormat("ha");
-    final formatted = haFormat.format(this);
-    final formattedDays = days.isNegative ? "${days}d" : "+${days}d";
+extension DateTimeStringX<T extends String> on T {
+  DateTime toDateTime() => DateTime.parse(this);
+  DateTime toDateTimeOrNull() => DateTime.tryParse(this);
+  DateTime toUtc() => suffix('Z').toDateTime();
+  DateTime toUtcOrNull() => suffix('Z').toDateTimeOrNull();
+  String suffix(String suffix) => endsWith(suffix) ? this : "${this}${suffix}";
+}
 
-    return (days == 0) ? formatted : "${formatted} ${formattedDays}";
-  }
+extension DateTimeX<T extends DateTime> on T {
 
   DateTimeRange range(Duration range, {Duration step = const Duration(hours: 1)}) {
     final until = this + range;
@@ -283,151 +281,5 @@ class _DateTimeRangeIterator extends Iterator<DateTime> {
 
     _current = next;
     return true;
-  }
-}
-
-extension DateTimeStringX<T extends String> on T {
-  DateTime toDateTime() => DateTime.parse(this);
-  DateTime toDateTimeOrNull() => DateTime.tryParse(this);
-  DateTime toUtc() => suffix('Z').toDateTime();
-  DateTime toUtcOrNull() => suffix('Z').toDateTimeOrNull();
-  String suffix(String suffix) => endsWith(suffix) ? this : "${this}${suffix}";
-}
-
-extension DurationX<T extends Duration> on T {
-  String ms() => Durations.ms(this);
-  String hms() => Durations.hms(this);
-
-  static const daysPerYear = 365;
-
-  String string({
-    String separator: " ",
-    String seconds: " sec.",
-    String second: " sec.",
-    String minutes: " min.",
-    String minute: " min.",
-    String hours: " h",
-    String hour: " h",
-    String days: " d",
-    String day: " d",
-    String years: " y",
-    String year: " y",
-  }) {
-    final int nYears = inDays ~/ daysPerYear;
-    final int nDays = inDays.remainder(daysPerYear);
-    final int nHours = inHours.remainder(Duration.hoursPerDay);
-    final int nMinutes = inMinutes.remainder(Duration.minutesPerHour);
-    final int nSeconds = inSeconds.remainder(Duration.secondsPerMinute);
-    
-    final List<String> res = [];
-    
-    if (nSeconds >= 0) {
-      if (nYears == 1) {
-        res.add("${nSeconds}${second}");
-      } else {
-        res.add("${nSeconds}${seconds}");
-      }
-    }
-    if (nMinutes > 0) {
-      if (nYears == 1) {
-        res.add("${nMinutes}${minute}");
-      } else {
-        res.add("${nMinutes}${minutes}");
-      }
-    }
-    if (nHours > 0) {
-      if (nYears == 1) {
-        res.add("${nHours}${hour}");
-      } else {
-        res.add("${nHours}${hours}");
-      }
-    }
-    if (nDays > 0) {
-      if (nYears == 1) {
-        res.add("${nDays}${day}");
-      } else {
-        res.add("${nDays}${days}");
-      }
-    }
-    if (nYears > 0) {
-      if (nYears == 1) {
-        res.add("${nYears}${year}");
-      } else {
-        res.add("${nYears}${years}");
-      }
-    }
-
-    if (res.isEmpty) {
-      return "<0${second}";
-    }
-
-    return res.reversed.joinToString(separator: separator).trim();
-  }
-
-  DateTime agoOf(DateTime since) => (since ?? DateTime.now()) - this;
-}
-
-class Durations {
-  //DateFormat.ms().format(DateFormat.ms().parse("00:00").add(Duration(seconds: 60) - Duration(seconds: t.tick))),
-  static String ms(Duration duration) {
-    final text = "${duration.inMinutes.remainder(60).abs()}:${NumberFormat("00").format(duration.inSeconds.remainder(60).abs())}";
-    return duration.isNegative ? "-${text}" : text;
-  }
-  static String hms(Duration duration) {
-    final text = "${duration.inHours.abs()}:${duration.inMinutes.remainder(60).abs()}:${duration.inSeconds.remainder(60).abs()}";
-    return duration.isNegative ? "-${text}" : text;
-  }
-}
-
-extension DateTimeAgo<T extends DateTime> on T {
-  //String ago({
-  //  String locale,
-  //  DateTime until,
-  //  bool allowFromNow = true,
-  //}) => timeago.format(this, until: until, allowFromNow: allowFromNow);
-
-  String agoString({DateTime since}) {
-    since ??= DateTime.now();
-    return (since.difference(this)).agoString(since: since);
-  }
-}
-
-extension DurationAgoX<T extends Duration> on T {
-  String agoString({DateTime since}) {
-    final duration = this;
-    if (duration.inMinutes < 1) {
-      final seconds = duration.inSeconds.remainder(60).round();
-      if (seconds == 0) {
-        return null;
-      } else {
-        return "${duration.inSeconds.remainder(60).round()}s ago";
-      }
-    } else if (duration.inHours < 1) {
-      final seconds = duration.inSeconds.remainder(60).round();
-      if (seconds == 0) {
-        return "${duration.inMinutes.remainder(60).round()} mins ago";
-      } else {
-        return "${duration.inMinutes.remainder(60).round()} mins ${seconds} s ago";
-      }
-    } else if (duration.inHours < 3) { // >= 1hours
-      final minutes = duration.inMinutes.remainder(60).round();
-      if (minutes == 0) {
-        return "${duration.inHours.remainder(24).round()} hrs ago";
-      } else {
-        return "${duration.inHours.remainder(24).round()} hrs ${minutes} mins ago";
-      }
-    } else if (duration.inDays <= 1 && since != null) {
-      if (since.isAfter(DateTimes.today())) {
-        return "Today, at ${DateFormat.jm().format(since).toLowerCase()}";
-      } else {
-        return "Yesterday, at ${DateFormat.jm().format(since).toLowerCase()}";
-      }
-    } else {
-      if (since != null) {
-        return "${DateFormat.MMMMd().format(since)} at ${DateFormat.jm().format(since).toLowerCase()}";
-      } else {
-        return null;
-      }
-    }
   }
 }
