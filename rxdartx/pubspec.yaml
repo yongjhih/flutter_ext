@@ -1,0 +1,15 @@
+name: rxdartx
+description: The extensions for rxdart
+version: 0.0.1
+author: yongjhih@gmail.com
+homepage: https://github.com/yongjhih/flutter_ext
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  streamx: ^0.0.1
+  rxdart: ^0.23.1
+
+dev_dependencies:
+  test: ^1.9.2
