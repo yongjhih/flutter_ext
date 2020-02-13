@@ -32,4 +32,23 @@ void main() {
       .mapTo(true).toList(), await Stream.fromIterable(["1", "12", "123"])
       .map((it) => true).toList());
   });
+
+  test('.distinctUniqueBy()', () async {
+    await expectLater(
+        Stream.fromIterable(['1234', '1234', 'abcd', 'abc', '1234', 'abcd', '123'])
+          .distinctUnique(equals: (it, that) => it.length == that.length, hashCode: (it) => it.length.hashCode),
+        emitsInOrder(<dynamic>[
+          '1234',
+          'abc',
+          emitsDone
+        ]));
+    await expectLater(
+        Stream.fromIterable(['1234', '1234', 'abcd', 'abc', '1234', 'abcd', '123'])
+          .distinctUniqueBy((it) => it.length),
+        emitsInOrder(<dynamic>[
+          '1234',
+          'abc',
+          emitsDone
+        ]));
+  });
 }
