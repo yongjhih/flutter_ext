@@ -78,3 +78,18 @@ class _FutureCallableStream<T> extends Stream<T> {
       _factory().listen(onData,
           onError: onError, onDone: onDone, cancelOnError: cancelOnError);
 }
+
+/// TODO
+extension CallablesStreamX<R> on Iterable<_Callable<R>> {
+  Stream<R> asStream() => null;
+}
+
+/// TODO
+extension FutureCallablesStreamX<R> on Iterable<_FutureCallable<R>> {
+  Stream<R> asStream() => null;
+}
+
+/// TODO
+extension StreamsX<T> on Iterable<Stream<T>> {
+  Stream<T> asStream() => null;
+}
