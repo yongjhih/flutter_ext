@@ -139,5 +139,9 @@ same(list0).of(list0);
 
 
 * [dartx](https://github.com/leisim/dartx)
+* [yongjhih/dartx](https://github.com/yongjhih/dartx) (pending PRs)
 * [time.dart](https://github.com/jogboms/time.dart)
 * [dart-kotlin_flavor](https://github.com/YusukeIwaki/dart-kotlin_flavor)
+* https://github.com/canewsin/widget_extensions
+* https://github.com/ali2236/context_extentions
+* https://github.com/droididan/dart_extensions (duplicated to dartx)
