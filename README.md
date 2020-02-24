@@ -58,6 +58,31 @@ expect(
 );
 ```
 
+## asStream()
+
+```dart
+final Stream<String> stream =  ["hello", "world"].asStream();
+```
+
+```dart
+final Stream<String> stream = (() => "hello").asStream(); // defer
+```
+
+```dart
+final Stream<String> stream = (() async => "hello").asStream();
+final Stream<String> stream = Future.value("hello").asStream();
+```
+
+```dart
+final Stream<String> stream = (() => Future.value("hello")).asStream(); // defer
+```
+
+```dart
+final Stream<String> stream = [Future.value("hello"), Future.value("world")].asStream();
+```
+
+## test
+
 Before:
 
 ```dart
