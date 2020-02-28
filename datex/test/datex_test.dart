@@ -130,26 +130,48 @@ void main() {
         .of(DateTime(1984, 11, 19).downTo(1.days.agoOf(DateTime(1984, 11, 19))).toList().reversed);
   });
   test('Duration.string()', () {
-    expect(59.seconds.string(), "59 sec.");
-    expect(60.seconds.string(), "1 min.");
+    expect(59.seconds.string(), "59 sec");
+    expect(60.seconds.string(), "1 min");
     expect(
       Duration(days: 1, hours: 23, minutes: 3, seconds: 3).string(),
-      "1 d 23 hrs. 3 min. 3 sec.",
+      "1 d 23 h 3 min 3 sec",
     );
     expect(
       Duration(days: 1, minutes: 3, seconds: 3).string(),
-      "1 d 3 min. 3 sec.",
+      "1 d 3 min 3 sec",
     );
     expect(
       Duration(days: 1, hours: 24, minutes: 3, seconds: 3).string(),
-      "2 d 3 min. 3 sec.",
+      "2 d 3 min 3 sec",
     );
     expect(
       Duration(days: 1, seconds: 3).string(),
-      "1 d 3 sec.",
+      "1 d 3 sec",
     );
-    expect(1.microseconds.string(), "<0 sec.");
-    expect(1.milliseconds.string(), "<0 sec.");
-    expect(Duration.zero.string(), "0 sec.");
+    expect(1.microseconds.string(), "<0 sec");
+    expect(1.milliseconds.string(), "<0 sec");
+    expect(Duration.zero.string(), "0 sec");
   });
+
+  test('should DateTimeRange.format()', () {
+    expect(
+      DateTime(1984, 11, 19).rangeTo(DateTime(1984, 11, 28)).format(),
+      "November 19 - 28",
+    );
+    expect(
+      DateTime(1984, 11, 19).rangeTo(DateTime(1984, 12, 2)).format(),
+      "Nov 19 - Dec 2",
+    );
+    expect(
+      DateTime(1984, 11, 19).rangeTo(DateTime(2020, 1, 2)).format(),
+      "Nov 19, 1984 - Jan 2, 2020",
+    );
+
+    expect(
+      DateTime(1984, 11, 19, 11, 59, 59).rangeTo(DateTime(1984, 11, 19, 12, 59, 59)).format(),
+      //"Mon, 11/19 11:59 AM - 12:59 PM",
+      "Mon 11:59 AM - 12:59 PM",
+    );
+  });
+
 }

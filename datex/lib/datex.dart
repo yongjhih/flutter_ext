@@ -110,6 +110,11 @@ extension DateTimeX<T extends DateTime> on T {
 
   DateTimeProgression downTo(DateTime endInclusive, {Duration step = const Duration(hours: 1)}) =>
       DateTimeProgression(this, endInclusive, step: step);
+
+  String format(DateFormat format) => format.format(this);
+
+  String formatOrNull(DateFormat format) => format.formatOrNull(this);
+
 }
 
 //class DateTimeRange extends DateTimeProgression implements ClosedRange<DateTime> {
@@ -282,4 +287,151 @@ class _DateTimeRangeIterator extends Iterator<DateTime> {
     _current = next;
     return true;
   }
+}
+
+extension DateFormatX<T extends DateFormat> on T {
+  String tryFormat(DateTime date) => formatOrNull(date);
+
+  String formatOrNull(DateTime date) {
+    try {
+      return format(date);
+    } on FormatException {
+      return null;
+    }
+  }
+}
+
+extension DateTimeRangeX<T extends DateTimeRange> on T {
+  String format({
+    String spacer = " - ",
+    DateFormat yearFormat,
+    DateFormat monthFormat,
+    DateFormat dayFormat,
+    DateFormat dayTimeFormat,
+    DateFormat timeFormat,
+  }) {
+    yearFormat ??= DateFormat.yMMMd();
+    monthFormat ??= DateFormat.MMMd();
+    dayFormat ??= DateFormat.MMMM();
+    dayTimeFormat ??= DateFormat.E(); // DateFormat.MEd();
+    timeFormat ??= DateFormat.jm();
+    if (start.year != endInclusive.year) {
+      return "${start.format(yearFormat)}${spacer}${endInclusive.format(yearFormat)}";
+    } else if (start.month != endInclusive.month) {
+      return "${start.format(monthFormat)}${spacer}${endInclusive.format(monthFormat)}";
+    } else {
+      if (start.day != endInclusive.day) {
+        return "${start.format(dayFormat)} ${start.format(DateFormat.d())}${spacer}${endInclusive.format(DateFormat.d())}";
+      } else {
+        return "${start.format(dayTimeFormat)} ${start.format(timeFormat)}${spacer}${endInclusive.format(timeFormat)}";
+      }
+    }
+  }
+}
+
+extension DurationX<T extends Duration> on T {
+  String ms() {
+    final text = "${minutes().abs()}:${NumberFormat("00").format(seconds().abs())}";
+    return isNegative ? "-${text}" : text;
+  }
+  String hms() {
+    final text = "${inHours.abs()}:${minutes().abs()}:${seconds().abs()}";
+    return isNegative ? "-${text}" : text;
+  }
+
+  static const daysPerYear = 365;
+  static const daysPerWeek = 7;
+
+  int years() => inDays ~/ daysPerYear;
+  int days() => inDays.remainder(daysPerYear).round();
+  int hours() => inHours.remainder(Duration.hoursPerDay).round();
+  int minutes() => inMinutes.remainder(Duration.minutesPerHour).round();
+  int seconds() => inSeconds.remainder(Duration.secondsPerMinute).round();
+
+  /// See also https://github.com/desktop-dart/duration/blob/master/lib/src/duration.dart
+  String string({
+    bool single = false,
+    String separator = " ",
+    String second(int n),
+    String seconds(int n),
+    String minute(int n),
+    String minutes(int n),
+    String hours(int n),
+    String hour(int n),
+    String days(int n),
+    String day(int n),
+    String years(int n),
+    String year(int n),
+  }) {
+    second ??= (n) => "${n} sec";
+    seconds ??= (n) => "${n} sec";
+    minute ??= (n) => "${n} min";
+    minutes ??= (n) => "${n} min";
+    hour ??= (n) => "${n} h";
+    hours ??= (n) => "${n} h";
+    day ??= (n) => "${n} d";
+    days ??= (n) => "${n} d";
+    year ??= (n) => "${n} y";
+    years ??= (n) => "${n} y";
+
+    final int nYears = this.years();
+    final int nDays = this.days();
+    final int nHours = this.hours();
+    final int nMinutes = this.minutes();
+    final int nSeconds = this.seconds();
+
+    final List<String> res = [];
+
+    if (this == Duration.zero) {
+      return "${second(nSeconds)}";
+    }
+
+    if (nSeconds > 0) {
+      if (nSeconds == 1) {
+        res.add("${second(nSeconds)}");
+      } else {
+        res.add("${seconds(nSeconds)}");
+      }
+    }
+    if (nMinutes > 0) {
+      if (nMinutes == 1) {
+        res.add("${minute(nMinutes)}");
+      } else {
+        res.add("${minutes(nMinutes)}");
+      }
+    }
+    if (nHours > 0) {
+      if (nHours == 1) {
+        res.add("${hour(nHours)}");
+      } else {
+        res.add("${hours(nHours)}");
+      }
+    }
+    if (nDays > 0) {
+      if (nDays == 1) {
+        res.add("${day(nDays)}");
+      } else {
+        res.add("${days(nDays)}");
+      }
+    }
+    if (nYears > 0) {
+      if (nYears == 1) {
+        res.add("${year(nYears)}");
+      } else {
+        res.add("${years(nYears)}");
+      }
+    }
+
+    if (res.isEmpty) {
+      return "<${second(0)}";
+    }
+
+    if (single) {
+      return res.last;
+    }
+
+    return res.reversed.joinToString(separator: separator).trim();
+  }
+
+  DateTime agoOf(DateTime since) => (since ?? DateTime.now()) - this;
 }
