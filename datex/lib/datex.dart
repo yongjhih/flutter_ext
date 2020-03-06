@@ -317,9 +317,9 @@ extension DateTimeRangeX<T extends DateTimeRange> on T {
     timeFormat ??= DateFormat.jm();
     if (start.year != endInclusive.year) {
       return "${start.format(yearFormat)}${spacer}${endInclusive.format(yearFormat)}";
-    } else if (start.month != endInclusive.month) {
+    } else if (start.month != endInclusive.month) { // same year
       return "${start.format(monthFormat)}${spacer}${endInclusive.format(monthFormat)}";
-    } else {
+    } else { // same year and month
       if (start.day != endInclusive.day) {
         return "${start.format(dayFormat)} ${start.format(DateFormat.d())}${spacer}${endInclusive.format(DateFormat.d())}";
       } else {
