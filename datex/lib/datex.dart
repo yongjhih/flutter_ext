@@ -309,21 +309,23 @@ extension DateTimeRangeX<T extends DateTimeRange> on T {
     DateFormat dayFormat,
     DateFormat dayTimeFormat,
     DateFormat timeFormat,
+    DateFormat add(DateFormat format),
   }) {
     yearFormat ??= DateFormat.yMMMd();
     monthFormat ??= DateFormat.MMMd();
     dayFormat ??= DateFormat.MMMM();
     dayTimeFormat ??= DateFormat.E(); // DateFormat.MEd();
     timeFormat ??= DateFormat.jm();
+    add ??= (it) => it;
     if (start.year != endInclusive.year) {
       return "${start.format(yearFormat)}${spacer}${endInclusive.format(yearFormat)}";
-    } else if (start.month != endInclusive.month) { // same year
-      return "${start.format(monthFormat)}${spacer}${endInclusive.format(monthFormat)}";
-    } else { // same year and month
+    } else if (start.month != endInclusive.month) {
+      return "${start.format(monthFormat)}${spacer}${endInclusive.format(add(monthFormat))}";
+    } else {
       if (start.day != endInclusive.day) {
-        return "${start.format(dayFormat)} ${start.format(DateFormat.d())}${spacer}${endInclusive.format(DateFormat.d())}";
+        return "${start.format(dayFormat)} ${start.format(DateFormat.d())}${spacer}${endInclusive.format(add(DateFormat.d()))}";
       } else {
-        return "${start.format(dayTimeFormat)} ${start.format(timeFormat)}${spacer}${endInclusive.format(timeFormat)}";
+        return "${start.format(dayTimeFormat)} ${start.format(timeFormat)}${spacer}${endInclusive.format(add(timeFormat))}";
       }
     }
   }

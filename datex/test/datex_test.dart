@@ -159,6 +159,11 @@ void main() {
       "November 19 - 28",
     );
     expect(
+      DateTime(1984, 11, 19).rangeTo(DateTime(1983, 11, 28)).format(),
+      "Nov 19, 1984 - Nov 28, 1983",
+    );
+
+    expect(
       DateTime(1984, 11, 19).rangeTo(DateTime(1984, 12, 2)).format(),
       "Nov 19 - Dec 2",
     );
@@ -171,6 +176,10 @@ void main() {
       DateTime(1984, 11, 19, 11, 59, 59).rangeTo(DateTime(1984, 11, 19, 12, 59, 59)).format(),
       //"Mon, 11/19 11:59 AM - 12:59 PM",
       "Mon 11:59 AM - 12:59 PM",
+    );
+    expect(
+    DateTime(1984, 11, 19).rangeTo(DateTime(1985, 11, 23)).format(),
+      "Nov 19, 1984 - Nov 23, 1985",
     );
   });
 
