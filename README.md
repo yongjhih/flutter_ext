@@ -81,6 +81,64 @@ final Stream<String> stream = (() => Future.value("hello")).asStream(); // defer
 final Stream<String> stream = [Future.value("hello"), Future.value("world")].asStream();
 ```
 
+
+```dart
+  test('should DateTimeRange.format()', () {
+    expect(
+      DateTime(1984, 11, 19).rangeTo(DateTime(1984, 11, 28)).format(),
+      "November 19 - 28",
+    );
+    expect(
+      DateTime(1984, 11, 19).rangeTo(DateTime(1984, 12, 2)).format(),
+      "Nov 19 - Dec 2",
+    );
+    expect(
+      DateTime(1984, 11, 19).rangeTo(DateTime(2020, 1, 2)).format(),
+      "Nov 19, 1984 - Jan 2, 2020",
+    );
+
+    expect(
+      DateTime(1984, 11, 19, 11, 59, 59).rangeTo(DateTime(1984, 11, 19, 12, 59, 59)).format(),
+      //"Mon, 11/19 11:59 AM - 12:59 PM",
+      "Mon 11:59 AM - 12:59 PM",
+    );
+  });
+
+  test('should DateTime.formats()', () {
+    expect(
+      DateTime(1984, 11, 19).formats(end: DateTime(1984, 11, 23), from: DateTime(1984)),
+      "November 19 - 23",
+    );
+    expect(
+      DateTime(1984, 11, 19).formats(end: DateTime(1984, 11, 23), from: DateTime(2020)),
+      "November 19 - 23, 1984",
+    );
+    expect(
+      DateTime(1984, 11, 19).formats(end: DateTime(1985, 11, 23), from: DateTime(2020)),
+      "1984 - 1985",
+    );
+
+    expect(
+      DateTime(1984, 11, 1).formats(end: DateTime(1984, 12, 0), from: DateTime(2020)),
+      "November 1984",
+    );
+    expect(
+      DateTime(1984, 1, 1).formats(end: DateTime(1984, 12, 28), from: DateTime(2020)),
+      "1984",
+    );
+
+    expect(
+      DateTime(1984, 1, 1).formats(end: DateTime(1984, 12, 1), from: DateTime(2020)),
+      "1984",
+    );
+    expect(
+      DateTime(1984, 11, 1).formats(end: DateTime(1984, 12, 25), from: DateTime(2020)),
+      //"Nov 1 - Dec 25, 1984",
+      "1984",
+    );
+  });
+```
+
 ## test
 
 Before:
