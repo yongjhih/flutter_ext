@@ -183,4 +183,46 @@ void main() {
     );
   });
 
+  test('should lastDayOfYear()/firstDayOfYear()', () {
+    expect(DateTime(2020, 3, 1, 23, 58, 58).lastDayOfYear(), DateTime(2020, 12, 31, 23, 58, 58));
+    expect(DateTime(2020, 3, 1, 23, 58, 58).lastDayOfYear().firstMoment(), DateTime(2020, 12, 31));
+    expect(DateTime(2020, 3, 1, 23, 58, 58).lastDayOfYear().year, DateTime(2020, 12, 31).year);
+    expect(DateTime(2020, 3, 1, 23, 58, 58).lastDayOfYear().month, DateTime(2020, 12, 31).month);
+    expect(DateTime(2020, 3, 1, 23, 58, 58).lastDayOfYear().day, DateTime(2020, 12, 31).day);
+
+    expect(DateTime(2020, 3, 1, 23, 58, 58).firstDayOfYear(), DateTime(2020, 1, 1, 23, 58, 58));
+    expect(DateTime(2020, 3, 1, 23, 58, 58).lastMomentOfYear(), DateTime(2020, 12, 31, 23, 59, 59, 999, 999));
+    expect(DateTime(2020, 3, 1, 23, 58, 58).firstMomentOfYear(), DateTime(2020, 1, 1));
+  });
+  test('should nextMonths()/monthsAgo()', () {
+    expect(DateTime(2020, 3, 1).monthsAgo(), DateTime(2020, 2, 1));
+    expect(DateTime(2020, 1, 1).nextMonths(), DateTime(2020, 2, 1));
+
+    expect(DateTime(2020, 3, 31).monthsAgo(), DateTime(2020, 2, 29));
+    expect(DateTime(2020, 1, 31).nextMonths(), DateTime(2020, 2, 29));
+  });
+  test('should Duration.years()/months()/days()', () {
+    final year = 365.days;
+    final month = 30.days;
+    final actual = (year * 2) + (month * 3) + 28.days + 4.hours + 5.minutes + 6.seconds + 789.milliseconds + 123.microseconds;
+    expect(actual.years(), 2);
+    expect(actual.months(), 3);
+    expect(actual.days(), 28);
+    expect(actual.hours(), 4);
+    expect(actual.minutes(), 5);
+    expect(actual.seconds(), 6);
+    expect(actual.milliseconds(), 789);
+    expect(actual.microseconds(), 123);
+  });
+  test('should DateTimeRange(leap: true)', () {
+    // TODO
+    //DateTime(2020, 3, 8).rangeTo(DateTime(2020, 3, 9), leap: false).forEach((it) {
+    //  print("$it");
+    //});
+    //print("${DateTime(2020, 3, 8).copyWith(hour: 1)}");
+    //print("${DateTime(2020, 3, 8).copyWith(hour: 2)}");
+    //DateTime(2020, 3, 8).rangeTo(DateTime(2020, 3, 9), leap: true).forEach((it) {
+    //  print("$it");
+    //});
+  });
 }

@@ -105,15 +105,203 @@ extension DateTimeX<T extends DateTime> on T {
     return rangeTo(until, step: step);
   }
 
-  DateTimeRange rangeTo(DateTime endInclusive, {Duration step = const Duration(hours: 1)}) =>
-       DateTimeRange(this, endInclusive, step: step);
+  DateTimeRange rangeTo(DateTime endInclusive, {
+    Duration step = const Duration(hours: 1),
+    bool leap = true,
+  }) =>
+       DateTimeRange(this, endInclusive, step: step, leap: leap);
 
-  DateTimeProgression downTo(DateTime endInclusive, {Duration step = const Duration(hours: 1)}) =>
-      DateTimeProgression(this, endInclusive, step: step);
+  DateTimeProgression downTo(DateTime endInclusive, {
+    Duration step = const Duration(hours: 1),
+    bool leap = true,
+  }) =>
+      DateTimeProgression(this, endInclusive, step: step, leap: leap);
 
   String format(DateFormat format) => format.format(this);
 
   String formatOrNull(DateFormat format) => format.formatOrNull(this);
+
+  DateTime copyWith({
+    int year,
+    int month,
+    int day,
+    int hour,
+    int minute,
+    int second,
+    int millisecond,
+    int microsecond,
+  }) {
+    return isUtc ? DateTime.utc(
+      year ?? this.year,
+      month ?? this.month,
+      day ?? this.day,
+      hour ?? this.hour,
+      minute ?? this.minute,
+      second ?? this.second,
+      millisecond ?? this.millisecond,
+      microsecond ?? this.microsecond,
+    ) : DateTime(
+      year ?? this.year,
+      month ?? this.month,
+      day ?? this.day,
+      hour ?? this.hour,
+      minute ?? this.minute,
+      second ?? this.second,
+      millisecond ?? this.millisecond,
+      microsecond ?? this.microsecond,
+    );
+  }
+
+  /// Last day of this month
+  DateTime lastDay() => nextMonths().copyWith(day: 0);
+
+  DateTime lastDaySecond() => nextMonths().copyWith(
+    day: 1,
+    hour: 0,
+    minute: 0,
+    second: -1,
+    millisecond: 0,
+    microsecond: 0,
+  );
+
+  /// Last day moment of this month
+  ///
+  /// Equivalent to first day moment of next month - 1 microsecond
+  DateTime lastDayMoment() => nextMonths().copyWith(
+    day: 1,
+    hour: 0,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+    microsecond: -1,
+  );
+
+  DateTime firstDay() => copyWith(day: 1);
+
+  /// First day moment of this month
+  DateTime firstDayMoment() => copyWith(
+    day: 1,
+    hour: 0,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+    microsecond: 0,
+  );
+
+  /// Last moment today
+  ///
+  /// Equivalent to tomorrow first moment - 1 microsecond
+  DateTime lastMoment() => copyWith(
+    day: day + 1,
+    hour: 0,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+    microsecond: -1,
+  );
+
+  /// First moment today
+  DateTime firstMoment() => copyWith(
+    hour: 0,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+    microsecond: 0,
+  );
+
+  /// 1234567
+  ///       ^
+  DateTime firstWeekday([int end]) => copyWith(
+    day: day - (DurationX.daysPerWeek) + 1,
+  );
+
+  DateTime firstWeekdayMoment([int end]) => copyWith(
+    day: day - (DurationX.daysPerWeek) + 1,
+    hour: 0,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+    microsecond: 0,
+  );
+
+  /// TODO end weekday
+  DateTime lastWeekday([int end]) => copyWith(
+    day: day + (DurationX.daysPerWeek) - 1,
+  );
+
+  /// TODO end weekday
+  DateTime lastWeekdayMoment([int end]) => copyWith(
+    day: day + (DurationX.daysPerWeek),
+    hour: 0,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+    microsecond: -1,
+  );
+
+  DateTime firstMomentOfYear() => copyWith(
+    year: year,
+    month: 1,
+    day: 1,
+    hour: 0,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+    microsecond: 0,
+  );
+
+  DateTime lastMomentOfYear() => copyWith(
+    year: year + 1,
+    month: 1,
+    day: 1,
+    hour: 0,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+    microsecond: -1,
+  );
+
+  DateTime firstDayOfYear() => copyWith(
+    year: year,
+    month: 1,
+    day: 1,
+  );
+
+  DateTime lastDayOfYear() => copyWith(
+    year: year + 1,
+    month: 1,
+    day: 0,
+  );
+
+  /// expect(3/31.monthAgo(), 2/29)
+  DateTime monthsAgo([int months = 1]) => copyWith(month: month - months).coerceAtMost(copyWith(month: month - months + 1, day: 0));
+  /// expect(1/31.nextMonth(), 2/29)
+  DateTime nextMonths([int months = 1]) => copyWith(month: month + months).coerceAtMost(copyWith(month: month + months + 1, day: 0));
+
+  DateTime yearsAgo([int years = 1]) => copyWith(year: year - years);
+  DateTime nextYears([int years = 1]) => copyWith(year: year + years);
+
+  DateTime weeksAgo([int weeks = 1]) => copyWith(day: day - (weeks * DurationX.daysPerWeek));
+  DateTime nextWeeks([int weeks = 1]) => copyWith(day: day + (weeks * DurationX.daysPerWeek));
+
+  DateTime yesterday() => daysAgo();
+  DateTime tomorrow() => nextDays();
+
+  DateTime daysAgo([int days = 1]) => copyWith(day: day - days);
+
+  DateTime nextDays([int days = 1]) => copyWith(day: day + days);
+
+  DateTimeRange hours({ bool inclusive = true }) => inclusive
+      ? firstMoment().rangeTo(tomorrow().firstMoment(), step: 1.hours)
+      : firstMoment().rangeTo(lastMoment(), step: 1.hours);
+
+  /// 1234567
+  /// ^
+  DateTimeRange weekdays({ bool inclusive = true }) => inclusive
+      ? firstMoment().rangeTo(nextWeeks().firstMoment(), step: 1.days)
+      : firstMoment().rangeTo(lastWeekdayMoment(), step: 1.days);
+
+//DateTimeRange get days => firstDayMoment().rangeTo(nextMonths().firstDayMoment(), step: 1.days);
 
 }
 
@@ -124,7 +312,10 @@ class DateTimeRange extends DateTimeProgression {
   ///
   /// [step] (optional, defaults to Duration(hours: 1)) has to be positive even when iterating
   /// downwards.
-  DateTimeRange(DateTime first, DateTime endInclusive, {Duration step = const Duration(hours: 1)})
+  DateTimeRange(DateTime first, DateTime endInclusive, {
+    Duration step = const Duration(hours: 1),
+    bool leap = true,
+  })
       : _first = first,
         // can't initialize directly du to naming conflict with step() method
         // ignore: prefer_initializing_formals
@@ -137,7 +328,7 @@ class DateTimeRange extends DateTimeProgression {
           }
           if (step == null) throw ArgumentError("step can't be null");
           return true;
-        }()), super(first, endInclusive, step: step);
+        }()), super(first, endInclusive, step: step, leap: leap);
 
   /// The first element in the range.
   final DateTime _first;
@@ -178,12 +369,15 @@ class DateTimeProgression extends IterableBase<DateTime> {
   ///
   /// [step] (optional, defaults to Duration(hours: 1)) has to be positive even when iterating
   /// downwards.
-  DateTimeProgression(DateTime first, DateTime endInclusive, {Duration step = const Duration(hours: 1)})
+  DateTimeProgression(DateTime first, DateTime endInclusive, {
+    Duration step = const Duration(hours: 1),
+    this.leap = true,
+  })
       : _first = first,
   // can't initialize directly du to naming conflict with step() method
   // ignore: prefer_initializing_formals
         stepSize = step,
-        _last = _getDateTimeProgressionLastElement(first, endInclusive, step),
+        _last = !leap ? _getDateTimeProgressionLastElement(first, endInclusive, step) : endInclusive,
         assert(() {
           if (first == null) throw ArgumentError("start can't be null");
           if (endInclusive == null) {
@@ -202,8 +396,10 @@ class DateTimeProgression extends IterableBase<DateTime> {
   /// The step of the range.
   final Duration stepSize;
 
+  final bool leap;
+
   @override
-  Iterator<DateTime> get iterator => _DateTimeRangeIterator(_first, _last, stepSize);
+  Iterator<DateTime> get iterator => _DateTimeRangeIterator(_first, _last, stepSize, leap);
 
   DateTime get endInclusive => _last;
 
@@ -239,11 +435,12 @@ int _mod(int a, int b) {
 }
 
 class _DateTimeRangeIterator extends Iterator<DateTime> {
-  _DateTimeRangeIterator(this.first, this.last, this.step);
+  _DateTimeRangeIterator(this.first, this.last, this.step, this.leap);
 
   final DateTime first;
   final DateTime last;
   final Duration step;
+  final bool leap;
 
   @override
   DateTime get current => _current;
@@ -264,9 +461,35 @@ class _DateTimeRangeIterator extends Iterator<DateTime> {
     if (_current != null) {
       assert(first != last);
       if (first <= last) {
-        next += step;
+        if (leap) {
+          next = next.copyWith(
+            year: next.year + step.years(),
+            month: next.month + step.months(),
+            day: next.day + step.days(),
+            hour: next.hour + step.hours(),
+            minute: next.minute + step.minutes(),
+            second: next.second + step.seconds(),
+            millisecond: next.second + step.milliseconds(),
+            microsecond: next.second + step.microseconds(),
+          );
+        } else {
+          next += step;
+        }
       } else {
-        next -= step;
+        if (leap) {
+          next = next.copyWith(
+            year: next.year - step.years(),
+            month: next.month - step.months(),
+            day: next.day - step.days(),
+            hour: next.hour - step.hours(),
+            minute: next.minute - step.minutes(),
+            second: next.second - step.seconds(),
+            millisecond: next.second - step.milliseconds(),
+            microsecond: next.second - step.microseconds(),
+          );
+        } else {
+          next -= step;
+        }
       }
     }
     // exit when beyond end
@@ -343,12 +566,16 @@ extension DurationX<T extends Duration> on T {
 
   static const daysPerYear = 365;
   static const daysPerWeek = 7;
+  static const daysPerMonth = 30;
 
   int years() => inDays ~/ daysPerYear;
-  int days() => inDays.remainder(daysPerYear).round();
+  int months() => inDays.remainder(daysPerYear) ~/ daysPerMonth;
+  int days() => inDays.remainder(daysPerYear).remainder(daysPerMonth).round();
   int hours() => inHours.remainder(Duration.hoursPerDay).round();
   int minutes() => inMinutes.remainder(Duration.minutesPerHour).round();
   int seconds() => inSeconds.remainder(Duration.secondsPerMinute).round();
+  int milliseconds() => inMilliseconds.remainder(Duration.millisecondsPerSecond).round();
+  int microseconds() => inMicroseconds.remainder(Duration.microsecondsPerMillisecond).round();
 
   /// See also https://github.com/desktop-dart/duration/blob/master/lib/src/duration.dart
   String string({
