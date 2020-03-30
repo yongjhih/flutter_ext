@@ -89,8 +89,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: c5177391d62d0f0eb5516b771161aec8ab316e5a
-      resolved-ref: c5177391d62d0f0eb5516b771161aec8ab316e5a
+      ref: b406f8a9cc76b213438ee1ce9a5b64c42bb4c47a
+      resolved-ref: b406f8a9cc76b213438ee1ce9a5b64c42bb4c47a
       url: "https://github.com/yongjhih/dartx.git"
     source: git
     version: "0.3.0"

@@ -13,7 +13,7 @@ dependencies:
   dartx:
     git:
       url: https://github.com/yongjhih/dartx.git
-      ref: c5177391d62d0f0eb5516b771161aec8ab316e5a
+      ref: b406f8a9cc76b213438ee1ce9a5b64c42bb4c47a
   intl: ^0.16.0
 
 dev_dependencies:
