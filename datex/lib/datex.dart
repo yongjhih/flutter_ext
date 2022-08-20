@@ -20,7 +20,7 @@ class DateTimes {
   }
 
   /// original today
-  static DateTime today({DateTime from, int offsetDays = 0}) {
+  static DateTime today({DateTime? from, int offsetDays = 0}) {
     from ??= DateTime.now();
     return DateTime(from.year, from.month, from.day + offsetDays);
   }
@@ -31,7 +31,7 @@ class DateTimes {
   ///  -3     +5
   /// final lastSat
   /// final nextSat
-  static DateTime lastWeekday(weekday, {DateTime from}) {
+  static DateTime lastWeekday(weekday, {DateTime? from}) {
     from ??= DateTime.now();
     if (weekday < from.weekday) return today(from: from, offsetDays: weekday - from.weekday);
     return today(from: from, offsetDays: weekday - (from.weekday + 7));
@@ -43,19 +43,22 @@ class DateTimes {
   ///  -3     +5
   /// final lastSat
   /// final nextSat
-  static DateTime nextWeekday(weekday, {DateTime from}) {
+  static DateTime nextWeekday(int weekday, {DateTime? from}) {
     from = from ?? DateTime.now();
     return today(from: from, offsetDays: (from.weekday + (7 - weekday)) + 1);
   }
 
-  static DateTime recentWeekday(weekday, {DateTime from}) {
+  static DateTime recentWeekday(int weekday, {DateTime? from}) {
     from = from ?? DateTime.now();
     if (weekday == from.weekday) return today(from: from);
-    return from.weekday < weekday ? today(from: from, offsetDays: -7 + (weekday - from.weekday)) : today(from: from, offsetDays: weekday - from.weekday);
+    return from.weekday < weekday
+        ? today(from: from, offsetDays: -7 + (weekday - from.weekday))
+        : today(from: from, offsetDays: weekday - from.weekday);
   }
 
   // TODO
-  static DateTime thisWeekday(weekday, {DateTime from, int startDay = 6}) {
+  static DateTime thisWeekday(int weekday, {DateTime? from, int startDay = 6}) {
+    from ??= DateTime.now();
     //0123456
     //  ^
     //6012345
@@ -66,22 +69,28 @@ class DateTimes {
     //weekday + startDay % 7;
     //6 + 6 % 7 = 5
     //if (startDay + 7 < from.weekday + 7)
-    return today(from: from, offsetDays: weekday < from.weekday ? lastWeekday(weekday) : from.weekday - weekday);
+    final n = (weekday < from.weekday)
+        ? (lastWeekday(weekday, from: from)).weekday
+        : from.weekday - weekday;
+    return today(
+        from: from,
+        offsetDays: n,
+    );
   }
 
-  static DateTime of(String text, {bool isUtc = false}) => text?.toUtcOrNull()?.toLocal() ?? text?.toDateTimeOrNull() ?? DateTime.now();
+  static DateTime of(String text, {bool isUtc = false}) => text.toUtcOrNull()?.toLocal() ?? text.toDateTimeOrNull() ?? DateTime.now();
   //static DateTime ofNull(String text, {bool isUtc = false}) => or(() => DateTime.parse("${text}${isUtc ? "Z" : ""}"));
 
   static DateTime fromSeconds(int seconds, {bool isUtc = false}) => fromDuration(Duration(seconds: seconds), isUtc: isUtc);
   static DateTime fromDuration(Duration duration, {bool isUtc = false}) => DateTime.fromMicrosecondsSinceEpoch(duration.inMicroseconds, isUtc: isUtc);
   static int secondsSinceEpoch(DateTime date) => date.millisecondsSinceEpoch ~/ 1000;
 
-  static String formatAgo(DateTime since) {
+  static String? formatAgo(DateTime since) {
     // TODO
     return null;
   }
 
-  static String formatDuration(Duration duration) {
+  static String? formatDuration(Duration duration) {
     // TODO
     return null;
   }
@@ -92,9 +101,9 @@ class DateTimes {
 
 extension DateTimeStringX<T extends String> on T {
   DateTime toDateTime() => DateTime.parse(this);
-  DateTime toDateTimeOrNull() => DateTime.tryParse(this);
+  DateTime? toDateTimeOrNull() => DateTime.tryParse(this);
   DateTime toUtc() => suffix('Z').toDateTime();
-  DateTime toUtcOrNull() => suffix('Z').toDateTimeOrNull();
+  DateTime? toUtcOrNull() => suffix('Z').toDateTimeOrNull();
   String suffix(String suffix) => endsWith(suffix) ? this : "${this}${suffix}";
 }
 
@@ -119,38 +128,7 @@ extension DateTimeX<T extends DateTime> on T {
 
   String format(DateFormat format) => format.format(this);
 
-  String formatOrNull(DateFormat format) => format.formatOrNull(this);
-
-  DateTime copyWith({
-    int year,
-    int month,
-    int day,
-    int hour,
-    int minute,
-    int second,
-    int millisecond,
-    int microsecond,
-  }) {
-    return isUtc ? DateTime.utc(
-      year ?? this.year,
-      month ?? this.month,
-      day ?? this.day,
-      hour ?? this.hour,
-      minute ?? this.minute,
-      second ?? this.second,
-      millisecond ?? this.millisecond,
-      microsecond ?? this.microsecond,
-    ) : DateTime(
-      year ?? this.year,
-      month ?? this.month,
-      day ?? this.day,
-      hour ?? this.hour,
-      minute ?? this.minute,
-      second ?? this.second,
-      millisecond ?? this.millisecond,
-      microsecond ?? this.microsecond,
-    );
-  }
+  String? formatOrNull(DateFormat format) => format.formatOrNull(this);
 
   /// Last day of this month
   DateTime lastDay() => nextMonths().copyWith(day: 0);
@@ -211,11 +189,11 @@ extension DateTimeX<T extends DateTime> on T {
 
   /// 1234567
   ///       ^
-  DateTime firstWeekday([int end]) => copyWith(
+  DateTime firstWeekday([int? end]) => copyWith(
     day: day - (DurationX.daysPerWeek) + 1,
   );
 
-  DateTime firstWeekdayMoment([int end]) => copyWith(
+  DateTime firstWeekdayMoment([int? end]) => copyWith(
     day: day - (DurationX.daysPerWeek) + 1,
     hour: 0,
     minute: 0,
@@ -225,12 +203,12 @@ extension DateTimeX<T extends DateTime> on T {
   );
 
   /// TODO end weekday
-  DateTime lastWeekday([int end]) => copyWith(
+  DateTime lastWeekday([int? end]) => copyWith(
     day: day + (DurationX.daysPerWeek) - 1,
   );
 
   /// TODO end weekday
-  DateTime lastWeekdayMoment([int end]) => copyWith(
+  DateTime lastWeekdayMoment([int? end]) => copyWith(
     day: day + (DurationX.daysPerWeek),
     hour: 0,
     minute: 0,
@@ -399,7 +377,12 @@ class DateTimeProgression extends IterableBase<DateTime> {
   final bool leap;
 
   @override
-  Iterator<DateTime> get iterator => _DateTimeRangeIterator(_first, _last, stepSize, leap);
+  Iterator<DateTime> get iterator => _DateTimeRangeIterator(
+      first: _first,
+      last: _last,
+      step: stepSize,
+      leap: leap,
+  );
 
   DateTime get endInclusive => _last;
 
@@ -435,7 +418,12 @@ int _mod(int a, int b) {
 }
 
 class _DateTimeRangeIterator extends Iterator<DateTime> {
-  _DateTimeRangeIterator(this.first, this.last, this.step, this.leap);
+  _DateTimeRangeIterator({
+      required this.first,
+      required this.last,
+      required this.step,
+      required this.leap,
+  }) : _current = first;
 
   final DateTime first;
   final DateTime last;
@@ -443,8 +431,8 @@ class _DateTimeRangeIterator extends Iterator<DateTime> {
   final bool leap;
 
   @override
-  DateTime get current => _current;
-  DateTime _current;
+  DateTime get current => _current ?? first;
+  DateTime? _current;
   bool completed = false;
 
   @override
@@ -457,8 +445,7 @@ class _DateTimeRangeIterator extends Iterator<DateTime> {
     }
 
     final now = _current ?? first;
-    var next = now;
-    if (_current != null) {
+    DateTime next = now;
       assert(first != last);
       if (first <= last) {
         if (leap) {
@@ -491,7 +478,6 @@ class _DateTimeRangeIterator extends Iterator<DateTime> {
           next -= step;
         }
       }
-    }
     // exit when beyond end
     if (first <= last) {
       if (next > last) {
@@ -513,9 +499,9 @@ class _DateTimeRangeIterator extends Iterator<DateTime> {
 }
 
 extension DateFormatX<T extends DateFormat> on T {
-  String tryFormat(DateTime date) => formatOrNull(date);
+  String? tryFormat(DateTime date) => formatOrNull(date);
 
-  String formatOrNull(DateTime date) {
+  String? formatOrNull(DateTime date) {
     try {
       return format(date);
     } on FormatException {
@@ -527,12 +513,12 @@ extension DateFormatX<T extends DateFormat> on T {
 extension DateTimeRangeX<T extends DateTimeRange> on T {
   String format({
     String spacer = " - ",
-    DateFormat yearFormat,
-    DateFormat monthFormat,
-    DateFormat dayFormat,
-    DateFormat dayTimeFormat,
-    DateFormat timeFormat,
-    DateFormat add(DateFormat format),
+    DateFormat? yearFormat,
+    DateFormat? monthFormat,
+    DateFormat? dayFormat,
+    DateFormat? dayTimeFormat,
+    DateFormat? timeFormat,
+    DateFormat add(DateFormat format)?,
   }) {
     yearFormat ??= DateFormat.yMMMd();
     monthFormat ??= DateFormat.MMMd();
@@ -581,16 +567,16 @@ extension DurationX<T extends Duration> on T {
   String string({
     bool single = false,
     String separator = " ",
-    String second(int n),
-    String seconds(int n),
-    String minute(int n),
-    String minutes(int n),
-    String hours(int n),
-    String hour(int n),
-    String days(int n),
-    String day(int n),
-    String years(int n),
-    String year(int n),
+    String second(int n)?,
+    String seconds(int n)?,
+    String minute(int n)?,
+    String minutes(int n)?,
+    String hours(int n)?,
+    String hour(int n)?,
+    String days(int n)?,
+    String day(int n)?,
+    String years(int n)?,
+    String year(int n)?,
   }) {
     second ??= (n) => "${n} sec";
     seconds ??= (n) => "${n} sec";

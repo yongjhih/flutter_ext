@@ -1,19 +1,15 @@
 name: datex
 description: The extensions for DateTime/Duration
-version: 0.0.2
+version: 0.0.3
 author: yongjhih@gmail.com
 homepage: https://github.com/yongjhih/flutter_ext
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  time: ^1.2.0
-  #dartx: ^0.3.0
-  dartx:
-    git:
-      url: https://github.com/yongjhih/dartx.git
-      ref: 4c1472e7986e5779c95992fc085f0dea54154b4e
+  time: ^2.0.0
+  dartx: ^1.1.0
   intl: ^0.16.0
 
 dev_dependencies:
