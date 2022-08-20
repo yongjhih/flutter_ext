@@ -13,7 +13,7 @@ void main() {
     final list0 = [];
     same(list0).of(list0);
 
-    predicate((x) => ((x % 2) == 0), "is even").of(0);
+    predicate<int>((x) => ((x % 2) == 0), "is even").of(0);
 
     same(list0).not().of([]);
     equals([]).not().of([1]);

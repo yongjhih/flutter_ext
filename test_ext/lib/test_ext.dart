@@ -4,38 +4,38 @@ import 'package:test/test.dart' as test;
 
 extension MatcherX<T extends test.Matcher> on T {
   void of<S>(S actual, {
-    String reason,
+    String? reason,
     dynamic skip, // true or a String
   }) {
     test.expect(actual, this, reason: reason, skip: skip);
   }
 
   void to<S>(S actual, {
-    String reason,
+    String? reason,
     dynamic skip, // true or a String
   }) => of(actual, reason: reason, skip: skip);
 
   bool match<S>(S actual, {
-    Map matchState,
+    required Map matchState,
   }) => matches(actual, matchState);
 
   test.Matcher not() => _NotMatcher(this);
 }
 
-extension MatcherObjectX<T extends Object> on T {
+extension MatcherObjectX on Object {
   void shouldBeEmpty({
-    String reason,
+    String? reason,
     dynamic skip, // true or a String
   }) {
     print("MatcherObjectX.shouldBeEmpty");
     test.isEmpty.of(this, reason: reason, skip: skip);
   }
   void shouldBeNotEmpty({
-    String reason,
+    String? reason,
     dynamic skip, // true or a String
   }) {
     print("MatcherObjectX.shouldBeNotEmpty");
-    test.isNotEmpty.of<T>(this, reason: reason, skip: skip);
+    test.isNotEmpty.of<Object>(this, reason: reason, skip: skip);
   }
 }
 
@@ -51,9 +51,9 @@ class _NotMatcher extends test.Matcher {
 
 class TypedMatcher<T> extends test.Matcher {
 
-  const TypedMatcher({this.actual});
+  const TypedMatcher({required this.actual});
 
-  final T actual;
+  final T? actual;
 
   bool shouldMatch(T item, Map matchState) => false;
 
@@ -65,12 +65,12 @@ class TypedMatcher<T> extends test.Matcher {
 
 
   void shouldBeEmpty({
-    String reason,
+    String? reason,
     dynamic skip, // true or a String
   }) {
     print("TypedMatcher.shouldBeEmpty");
     if (actual != null) {
-      actual.shouldBeEmpty(reason: reason, skip: skip);
+      actual!.shouldBeEmpty(reason: reason, skip: skip);
     } else {
       test.isEmpty.of(actual, reason: reason, skip: skip);
     }
@@ -105,7 +105,7 @@ extension MatcherStringX<T extends String> on T {
     test.isIn(this);
 
   void shouldBeEmpty({
-    String reason,
+    String? reason,
     dynamic skip, // true or a String
   }) {
     print("MatcherStringX.shouldBeEmpty()");
@@ -113,7 +113,7 @@ extension MatcherStringX<T extends String> on T {
   }
 
   void shouldBeNotEmpty({
-    String reason,
+    String? reason,
     dynamic skip, // true or a String
   }) {
     print("MatcherStringX.shouldBeEmpty()");
@@ -135,7 +135,7 @@ extension MatcherIterableX<E> on Iterable<E> {
     test.isIn(this);
 
   void isHaving(E actual, {
-    String reason,
+    String? reason,
     dynamic skip, // true or a String
   }) {
     isIn().of(actual,
