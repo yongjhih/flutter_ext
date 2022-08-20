@@ -126,7 +126,7 @@ packages:
       name: intl
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.16.1"
+    version: "0.17.0"
   io:
     dependency: transitive
     description:
@@ -302,13 +302,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.16"
-  test_ext:
-    dependency: "direct dev"
-    description:
-      name: test_ext
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1"
   time:
     dependency: "direct main"
     description:

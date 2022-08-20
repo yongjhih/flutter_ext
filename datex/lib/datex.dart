@@ -239,13 +239,13 @@ extension DateTimeX<T extends DateTime> on T {
     microsecond: -1,
   );
 
-  DateTime firstDayOfYear() => copyWith(
+  DateTime get atFirstDayOfYear => copyWith(
     year: year,
     month: 1,
     day: 1,
   );
 
-  DateTime lastDayOfYear() => copyWith(
+  DateTime get atLastDayOfYear => copyWith(
     year: year + 1,
     month: 1,
     day: 0,
@@ -423,7 +423,7 @@ class _DateTimeRangeIterator extends Iterator<DateTime> {
       required this.last,
       required this.step,
       required this.leap,
-  }) : _current = first;
+  });
 
   final DateTime first;
   final DateTime last;
@@ -442,6 +442,11 @@ class _DateTimeRangeIterator extends Iterator<DateTime> {
     if (first == last) {
       completed = true;
       return false;
+    }
+
+    if (_current == null) {
+      _current = first;
+      return true;
     }
 
     final now = _current ?? first;
@@ -648,5 +653,5 @@ extension DurationX<T extends Duration> on T {
     return res.reversed.joinToString(separator: separator).trim();
   }
 
-  DateTime agoOf(DateTime since) => (since ?? DateTime.now()) - this;
+  DateTime agoOf(DateTime? since) => (since ?? DateTime.now()) - this;
 }

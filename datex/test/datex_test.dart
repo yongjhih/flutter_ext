@@ -1,7 +1,7 @@
+import 'package:dartx/dartx.dart';
 import 'package:test/test.dart';
 
 import 'package:time/time.dart';
-import 'package:test_ext/test_ext.dart';
 import 'package:datex/datex.dart';
 
 void main() {
@@ -68,9 +68,10 @@ void main() {
   });
 
   test('should DateTime.rangeTo()', () async {
-    isNotEmpty.of(DateTime(1984, 11, 19).range(1.days));
+    expect(1.rangeTo(5), [1, 2, 3, 4, 5]);
+    expect(DateTime(1984, 11, 19).range(1.days), isNotEmpty);
 
-    equals([
+    expect(DateTime(1984, 11, 19).rangeTo(DateTime(1984, 11, 20)).toList(), [
       DateTime(1984, 11, 19, 0),
       DateTime(1984, 11, 19, 1),
       DateTime(1984, 11, 19, 2),
@@ -96,38 +97,66 @@ void main() {
       DateTime(1984, 11, 19, 22),
       DateTime(1984, 11, 19, 23),
       DateTime(1984, 11, 19, 24),
-    ]).of(DateTime(1984, 11, 19).range(1.days).toList());
-
-    equals([
-      DateTime(1984, 11, 18, 0),
-      DateTime(1984, 11, 18, 1),
-      DateTime(1984, 11, 18, 2),
-      DateTime(1984, 11, 18, 3),
-      DateTime(1984, 11, 18, 4),
-      DateTime(1984, 11, 18, 5),
-      DateTime(1984, 11, 18, 6),
-      DateTime(1984, 11, 18, 7),
-      DateTime(1984, 11, 18, 8),
-      DateTime(1984, 11, 18, 9),
-      DateTime(1984, 11, 18, 10),
-      DateTime(1984, 11, 18, 11),
-      DateTime(1984, 11, 18, 12),
-      DateTime(1984, 11, 18, 13),
-      DateTime(1984, 11, 18, 14),
-      DateTime(1984, 11, 18, 15),
-      DateTime(1984, 11, 18, 16),
-      DateTime(1984, 11, 18, 17),
-      DateTime(1984, 11, 18, 18),
-      DateTime(1984, 11, 18, 19),
-      DateTime(1984, 11, 18, 20),
-      DateTime(1984, 11, 18, 21),
-      DateTime(1984, 11, 18, 22),
-      DateTime(1984, 11, 18, 23),
+    ]);
+    expect(DateTime(1984, 11, 19).range(1.days).toList(), [
       DateTime(1984, 11, 19, 0),
-    ]).of(1.days.agoOf(DateTime(1984, 11, 19)).rangeTo(DateTime(1984, 11, 19)).toList());
+      DateTime(1984, 11, 19, 1),
+      DateTime(1984, 11, 19, 2),
+      DateTime(1984, 11, 19, 3),
+      DateTime(1984, 11, 19, 4),
+      DateTime(1984, 11, 19, 5),
+      DateTime(1984, 11, 19, 6),
+      DateTime(1984, 11, 19, 7),
+      DateTime(1984, 11, 19, 8),
+      DateTime(1984, 11, 19, 9),
+      DateTime(1984, 11, 19, 10),
+      DateTime(1984, 11, 19, 11),
+      DateTime(1984, 11, 19, 12),
+      DateTime(1984, 11, 19, 13),
+      DateTime(1984, 11, 19, 14),
+      DateTime(1984, 11, 19, 15),
+      DateTime(1984, 11, 19, 16),
+      DateTime(1984, 11, 19, 17),
+      DateTime(1984, 11, 19, 18),
+      DateTime(1984, 11, 19, 19),
+      DateTime(1984, 11, 19, 20),
+      DateTime(1984, 11, 19, 21),
+      DateTime(1984, 11, 19, 22),
+      DateTime(1984, 11, 19, 23),
+      DateTime(1984, 11, 19, 24),
+    ]);
 
-    equals(1.days.agoOf(DateTime(1984, 11, 19)).rangeTo(DateTime(1984, 11, 19)).toList())
-        .of(DateTime(1984, 11, 19).downTo(1.days.agoOf(DateTime(1984, 11, 19))).toList().reversed);
+    expect(1.days.agoOf(DateTime(1984, 11, 19)).rangeTo(DateTime(1984, 11, 19)).toList(), [
+    DateTime(1984, 11, 18, 0),
+    DateTime(1984, 11, 18, 1),
+    DateTime(1984, 11, 18, 2),
+    DateTime(1984, 11, 18, 3),
+    DateTime(1984, 11, 18, 4),
+    DateTime(1984, 11, 18, 5),
+    DateTime(1984, 11, 18, 6),
+    DateTime(1984, 11, 18, 7),
+    DateTime(1984, 11, 18, 8),
+    DateTime(1984, 11, 18, 9),
+    DateTime(1984, 11, 18, 10),
+    DateTime(1984, 11, 18, 11),
+    DateTime(1984, 11, 18, 12),
+    DateTime(1984, 11, 18, 13),
+    DateTime(1984, 11, 18, 14),
+    DateTime(1984, 11, 18, 15),
+    DateTime(1984, 11, 18, 16),
+    DateTime(1984, 11, 18, 17),
+    DateTime(1984, 11, 18, 18),
+    DateTime(1984, 11, 18, 19),
+    DateTime(1984, 11, 18, 20),
+    DateTime(1984, 11, 18, 21),
+    DateTime(1984, 11, 18, 22),
+    DateTime(1984, 11, 18, 23),
+    DateTime(1984, 11, 19, 0),
+    ]
+    );
+
+    expect(1.days.agoOf(DateTime(1984, 11, 19)).rangeTo(DateTime(1984, 11, 19)).toList(),
+        DateTime(1984, 11, 19).downTo(1.days.agoOf(DateTime(1984, 11, 19))).toList().reversed);
   });
   test('Duration.string()', () {
     expect(59.seconds.string(), "59 sec");
@@ -184,16 +213,17 @@ void main() {
   });
 
   test('should lastDayOfYear()/firstDayOfYear()', () {
-    expect(DateTime(2020, 3, 1, 23, 58, 58).lastDayOfYear(), DateTime(2020, 12, 31, 23, 58, 58));
-    expect(DateTime(2020, 3, 1, 23, 58, 58).lastDayOfYear().firstMoment(), DateTime(2020, 12, 31));
-    expect(DateTime(2020, 3, 1, 23, 58, 58).lastDayOfYear().year, DateTime(2020, 12, 31).year);
-    expect(DateTime(2020, 3, 1, 23, 58, 58).lastDayOfYear().month, DateTime(2020, 12, 31).month);
-    expect(DateTime(2020, 3, 1, 23, 58, 58).lastDayOfYear().day, DateTime(2020, 12, 31).day);
+    expect(DateTime(2020, 3, 1, 23, 58, 58).atLastDayOfYear, DateTime(2020, 12, 31, 23, 58, 58));
+    expect(DateTime(2020, 3, 1, 23, 58, 58).atLastDayOfYear.firstMoment(), DateTime(2020, 12, 31));
+    expect(DateTime(2020, 3, 1, 23, 58, 58).atLastDayOfYear.year, DateTime(2020, 12, 31).year);
+    expect(DateTime(2020, 3, 1, 23, 58, 58).atLastDayOfYear.month, DateTime(2020, 12, 31).month);
+    expect(DateTime(2020, 3, 1, 23, 58, 58).atLastDayOfYear.day, DateTime(2020, 12, 31).day);
 
-    expect(DateTime(2020, 3, 1, 23, 58, 58).firstDayOfYear(), DateTime(2020, 1, 1, 23, 58, 58));
+    expect(DateTime(2020, 3, 1, 23, 58, 58).atFirstDayOfYear, DateTime(2020, 1, 1, 23, 58, 58));
     expect(DateTime(2020, 3, 1, 23, 58, 58).lastMomentOfYear(), DateTime(2020, 12, 31, 23, 59, 59, 999, 999));
     expect(DateTime(2020, 3, 1, 23, 58, 58).firstMomentOfYear(), DateTime(2020, 1, 1));
   });
+
   test('should nextMonths()/monthsAgo()', () {
     expect(DateTime(2020, 3, 1).monthsAgo(), DateTime(2020, 2, 1));
     expect(DateTime(2020, 1, 1).nextMonths(), DateTime(2020, 2, 1));
